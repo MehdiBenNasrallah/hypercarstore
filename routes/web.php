@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\voituresController;
+use App\Http\Controllers\offresController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/info', function () {
+    return view('info');
 });
+
+Route:: get ('/', [voituresController::class, 'index']);
+
+Route::resources([
+    'voitures' => voituresController::class,
+    'offres' => offresController::class,
+]);
