@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
+use App\Models\offres;
+use App\Models\voitures;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class offresController extends Controller
 {
@@ -13,7 +16,7 @@ class offresController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -34,7 +37,19 @@ class offresController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'prix' => 'required',
+            'message' => 'required',
+            'voiture_id' => 'required',
+            'user_id' => 'required',
+        ]);
+        if ($validator->fails()) 
+        {
+            return redirect()->back()->with('warning', 'Veuillez remplir tous les champs'); 
+        }
+        
+        offres::create($request->all());
+        return redirect()->back();
     }
 
     /**
@@ -79,6 +94,9 @@ class offresController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $offre = offres::findOrfail($id);
+        $offre->delete();
+
+        return redirect()->back();
     }
 }
