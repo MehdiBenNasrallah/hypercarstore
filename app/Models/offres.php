@@ -15,8 +15,9 @@ class offres extends Model
 
     public function voiture()
     {
-        return $this->belongsTo(voitures::class);
+        return $this->belongsTo(voitures::class, 'voiture_id'); // Utilise 'voiture_id' comme clé étrangère
     }
+
 
     public function user()
     {

@@ -13,7 +13,7 @@ class voitures extends Model
 
     public function offres()
     {
-        return $this->hasMany(offres::class);
+        return $this->hasMany(offres::class, 'voiture_id'); // Utilise 'voiture_id' comme clé étrangère
     }
     
 }

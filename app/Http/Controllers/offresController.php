@@ -43,13 +43,13 @@ class offresController extends Controller
             'voiture_id' => 'required',
             'user_id' => 'required',
         ]);
-        if ($validator->fails()) 
-        {
-            return redirect()->back()->with('warning', 'Veuillez remplir tous les champs'); 
+    
+        if ($validator->fails()) {
+            return redirect()->back()->with('warning', 'Veuillez remplir tous les champs');
         }
-        
+    
         offres::create($request->all());
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Offre créée avec succès');
     }
 
     /**

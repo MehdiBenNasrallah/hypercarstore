@@ -62,7 +62,7 @@ class voituresController extends Controller
      */
     public function show($id)
     {
-        $voiture = voitures::findOrfail($id);
+        $voiture = voitures::with('offres')->findOrFail($id);
         return view('voitures.show', compact('voiture'));
     }
 
