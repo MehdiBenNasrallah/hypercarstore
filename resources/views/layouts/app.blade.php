@@ -12,7 +12,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-  
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -20,11 +19,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <!-- JQuery -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    
+    <!-- jQuery and jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
 </head>
 <body>
 
@@ -34,8 +36,12 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name') }}
                 </a>
+                <a class="navbar-brand" href="{{ url('/info') }}">Info</a>
 
-                <a class= "navbar-brand" href="{{url('/info')}}" >Info</a>
+                <form class="form-inline my-2 my-lg-0 position-relative">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Recherche voiture" aria-label="Search" id="search">
+                    <div id="search-results" class="list-group position-absolute" style="display: none;"></div>
+                </form>
             </div>
         </nav>
 
@@ -43,7 +49,36 @@
             @yield('content')
         </main>
     </div>
-    <script src="{{ asset('vendor/jquery-ui/jquery-ui.js') }}"></script>
 
+    <script>
+        $(document).ready(function() {
+            $('#search').on('keyup', function() {
+                let query = $(this).val();
+
+                if (query.length > 2) { // Commence à chercher après 3 caractères
+                    $.ajax({
+                        url: "{{ route('voitures.autocomplete') }}",
+                        method: "GET",
+                        data: { query: query },
+                        success: function(data) {
+                            $('#search-results').empty().show();
+                            $.each(data, function(index, voiture) {
+                                $('#search-results').append('<a href="/voitures/' + voiture.id + '" class="list-group-item list-group-item-action">' + voiture.marque + ' ' + voiture.modele + '</a>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#search-results').hide(); // Masque les résultats si moins de 3 caractères
+                }
+            });
+
+            // Masquer les résultats lorsque l'utilisateur clique ailleurs
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('#search-results').length && !$(e.target).is('#search')) {
+                    $('#search-results').hide();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

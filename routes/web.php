@@ -21,6 +21,10 @@ Route::get('/info', function () {
 
 Route:: get ('/', [voituresController::class, 'index']);
 
+// Route pour l'autocomplétion
+Route::get('/voitures/autocomplete', [voituresController::class, 'autocomplete'])->name('voitures.autocomplete');
+
+
 Route::resources([
     'voitures' => voituresController::class,
     'offres' => offresController::class,

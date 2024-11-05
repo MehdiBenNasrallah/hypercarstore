@@ -7,6 +7,17 @@ use Illuminate\Support\Facades\Validator;
 
 class voituresController extends Controller
 {
+
+    public function autocomplete(Request $request)
+    {
+        $query = $request->get('query');
+        $voitures = voitures::where('marque', 'LIKE', '%' . $query . '%')
+                            ->orWhere('modele', 'LIKE', '%' . $query . '%')
+                            ->get();
+
+        return response()->json($voitures);
+    }
+    
     /**
      * Display a listing of the resource.
      *
