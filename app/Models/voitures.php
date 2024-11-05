@@ -9,7 +9,7 @@ class voitures extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['marque', 'annee', 'modele', 'valeur', 'description'];
+    protected $fillable = ['marque', 'annee', 'modele', 'valeur', 'description', 'photo'];
 
     public function offres()
     {

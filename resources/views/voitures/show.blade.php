@@ -7,6 +7,12 @@
     <p>Valeur : {{ $voiture->valeur }} $</p>
     <p>Description : {{ $voiture->description }}</p>
 
+    @if ($voiture->photo)
+        <div>
+            <img src="{{ asset('storage/' . $voiture->photo) }}" alt="Photo actuelle" style="width: 300px;">
+        </div>
+    @endif
+
     <a href="{{ url('voitures/'. $voiture->id . '/edit') }}" class="btn btn-primary">Modifier</a>
     <a href="{{ url('/') }}" class="btn btn-secondary">Retour à la liste</a>
 

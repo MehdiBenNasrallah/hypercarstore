@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Faker\Factory;
 use App\Models\voitures;
-use App\Models\User;
 
 class voituresSeeder extends Seeder
 {
@@ -18,16 +17,17 @@ class voituresSeeder extends Seeder
     {
         $faker = Factory::create();
         $faker->addProvider(new \Faker\Provider\FakeCar($faker));
-        
-        for ($i=0; $i < 10; $i++) { 
+
+        for ($i = 0; $i < 10; $i++) {
             voitures::create([
                 'marque' => $faker->vehicleBrand,
                 'modele' => $faker->vehicleModel,
                 'annee' => $faker->year,
                 'valeur' => $faker->randomFloat(2, 10000, 100000),
                 'description' => $faker->text,
+                'photo' => $faker->imageUrl(640, 480, 'cars', true, 'Faker'), // URL d'image aléatoire
             ]);
         }
-        
     }
 }
+

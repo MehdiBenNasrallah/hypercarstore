@@ -38,21 +38,35 @@ class voituresController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'marque' => 'required',
-            'annee' => 'required',
             'modele' => 'required',
+            'annee' => 'required',
             'valeur' => 'required',
             'description' => 'required',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
-        if ($validator->fails()) 
-        {
-            return redirect()->back()->with('warning', 'Veuillez remplir tous les champs'); 
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('warning', 'Veuillez remplir tous les champs');
         }
-        else 
-        {
-            voitures::create($request->all());
-            return redirect('/')->with('success', 'Voiture ajoutée avec succès');
+
+        // Gestion de l'upload de la photo
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('photos', 'public');
         }
+
+        voitures::create([
+            'marque' => $request->marque,
+            'modele' => $request->modele,
+            'annee' => $request->annee,
+            'valeur' => $request->valeur,
+            'description' => $request->description,
+            'photo' => $photoPath,  // Ajout de la photo
+        ]);
+
+        return redirect('/')->with('success', 'Voiture ajoutée avec succès');
     }
+
 
     /**
      * Display the specified resource.
@@ -87,9 +101,44 @@ class voituresController extends Controller
      */
     public function update(Request $request, $id)
     {
-        voitures::findOrfail($id)->update($request->all());
+        $validator = Validator::make($request->all(), [
+            'marque' => 'required',
+            'modele' => 'required',
+            'annee' => 'required',
+            'valeur' => 'required',
+            'description' => 'required',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('warning', 'Veuillez remplir tous les champs');
+        }
+
+        $voiture = voitures::findOrFail($id);
+
+        // Gestion de l'upload de la photo
+        $photoPath = $voiture->photo;  // Conserver l'ancienne photo si aucune nouvelle image n'est téléchargée
+        if ($request->hasFile('photo')) {
+            // Supprimer l'ancienne photo
+            if ($voiture->photo) {
+                Storage::disk('public')->delete($voiture->photo);
+            }
+            // Sauvegarder la nouvelle photo
+            $photoPath = $request->file('photo')->store('photos', 'public');
+        }
+
+        $voiture->update([
+            'marque' => $request->marque,
+            'modele' => $request->modele,
+            'annee' => $request->annee,
+            'valeur' => $request->valeur,
+            'description' => $request->description,
+            'photo' => $photoPath,  // Mise à jour de la photo
+        ]);
+
         return redirect('/')->with('success', 'Voiture modifiée avec succès');
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -30,6 +30,13 @@
                         <p>Année : {{ $voiture->annee }}</p>
                         <p>Valeur : {{ $voiture->valeur }} $</p>
                         <p>{{ $voiture->description }}</p>
+                        @if ($voiture->photo)
+                            <div>
+                                <img src="{{ asset('storage/' . $voiture->photo) }}" alt="Photo actuelle" style="width: 200px;">
+                            </div>
+                        @endif
+
+                        <hr>
 
                         <a href="{{ url('voitures/'. $voiture->id) }}" class="btn btn-outline-primary">En savoir plus</a>
                     </div>
