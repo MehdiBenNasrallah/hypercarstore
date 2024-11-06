@@ -26,6 +26,47 @@
     <!-- jQuery and jQuery UI -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <style>
+        .language-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .language-buttons .btn {
+            padding: 5px 10px;
+        }
+
+        .language-buttons .btn.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .language-buttons .btn img {
+            margin-right: 5px;
+        }
+
+        #search-results {
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            position: absolute;
+            z-index: 1000;
+            background-color: white;
+        }
+
+        #search-results a {
+            cursor: pointer;
+        }
+
+        #search-results a:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+
+
 </head>
 <body>
     <div id="app">
@@ -34,7 +75,7 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="@lang('general.toggle_navigation')">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -44,32 +85,25 @@
                         <a class="navbar-brand" href="{{ url('/info') }}">@lang("general.apropos")</a>
 
                         <form class="form-inline my-2 my-lg-0 position-relative">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Recherche voiture" aria-label="Search" id="search">
+                            <input class="form-control mr-sm-2" type="search" placeholder="@lang('general.search_car')" aria-label="Search" id="search">
                             <div id="search-results" class="list-group position-absolute" style="display: none;"></div>
                         </form>
 
                         <!-- Bloc multilingue -->
                         <ul class="navbar-nav ms-auto">
                             @php $locale = session()->get('locale'); @endphp
-                            <li class="nav-item dropdown">
-
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <img id="language-flag" src="{{ asset('/images/' . ($locale === 'fr' ? 'fr.png' : 'en.png')) }}" width="30px" height="20px">
-                                    <span id="language-text">{{ $locale === 'fr' ? 'Français' : 'English' }}</span>
+                            <div class="language-buttons">
+                                <a href="{{ route('lang', ['locale' => 'fr']) }}" class="btn btn-outline-primary {{ $locale === 'fr' ? 'active' : '' }}">
+                                    <img src="{{ asset('images/fr.png') }}" width="30px" height="20px"> @lang('general.french')
                                 </a>
+                                <a href="{{ route('lang', ['locale' => 'en']) }}" class="btn btn-outline-primary {{ $locale === 'en' ? 'active' : '' }}">
+                                    <img src="{{ asset('images/en.png') }}" width="30px" height="20px"> @lang('general.english')
+                                </a>
+                                <a href="{{ route('lang', ['locale' => 'es']) }}" class="btn btn-outline-primary {{ $locale === 'es' ? 'active' : '' }}">
+                                    <img src="{{ asset('images/es.png') }}" width="30px" height="20px"> @lang('general.spanish')
+                                </a>
+                            </div>
 
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('lang', ['locale' => 'en']) }}">
-                                        <img src="{{ asset('images/en.png') }}" width="30px" height="20px"> English
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('lang', ['locale' => 'fr']) }}">
-                                        <img src="{{ asset('images/fr.png') }}" width="30px" height="20px"> Français
-                                    </a>
-                                </div>
-
-                            </li>
                         </ul>
 
                     </ul>
@@ -80,41 +114,38 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">@lang('general.login')</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">@lang('general.register')</a>
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
+                        <li class="nav-item">
+                            <span class="nav-link">{{ Auth::user()->name }}</span>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                        document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                            <div class="btn-group" role="group" aria-label="User Actions">
+                                <!-- Bouton de déconnexion -->
+                                <button class="btn btn-outline-secondary" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    @lang('general.logout')
+                                </button>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
 
-                                    <!-- Links d'administration uniquement visibles par les admins -->
-                                    @if (Auth::check() && Auth::user()->isAdmin())
-                                        <a class="dropdown-item" href="{{ url('/admin/voitures') }}">Gestion des voitures</a>
-                                        <a class="dropdown-item" href="{{ url('/admin/voitures/create') }}">Ajouter une voiture</a>
-                                    @else
-                                        {{ Log::info('User is not admin', ['user_id' => Auth::user()->id, 'role' => Auth::user()->role]) }}
-                                    @endif
-                                </div>
-                            </li>
+                                <!-- Boutons d'administration visibles uniquement pour les administrateurs -->
+                                @if (Auth::check() && Auth::user()->isAdmin())
+                                    <a href="{{ url('/admin/voitures') }}" class="btn btn-outline-secondary">@lang('general.car_management')</a>
+                                    <a href="{{ url('/admin/voitures/create') }}" class="btn btn-outline-secondary">@lang('general.add_car')</a>
+                                @else
+                                    {{ Log::info('User is not admin', ['user_id' => Auth::user()->id, 'role' => Auth::user()->role]) }}
+                                @endif
+                            </div>
+                        </li>
                         @endguest
                     </ul>
                 </div>

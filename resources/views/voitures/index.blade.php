@@ -5,12 +5,12 @@
     <div class="row">
 
         <div class="col-lg-10">
-            <h2>Liste des voitures</h2>
+            <h2>@lang('general.car_list')</h2>
         </div>
 
         <div class="col-lg-2">
             @if (Auth::check() && Auth::user()->isAdmin())
-                <a class="btn btn-success" href="{{ url('voitures/create') }}">Ajouter une voiture</a>
+                <a class="btn btn-success" href="{{ url('admin/voitures/create') }}">@lang('general.add_car')</a>
             @endif
         </div>
 
@@ -29,18 +29,18 @@
                     <div class="card card-body">
                         {{-- Affichage des détails de la voiture --}}
                         <h2>{{ $voiture->marque }} - {{ $voiture->modele }}</h2>
-                        <p>Année : {{ $voiture->annee }}</p>
-                        <p>Valeur : {{ $voiture->valeur }} $</p>
+                        <p>@lang('general.year'): {{ $voiture->annee }}</p>
+                        <p>@lang('general.value'): {{ $voiture->valeur }} $</p>
                         <p>{{ $voiture->description }}</p>
                         @if ($voiture->photo)
                             <div>
-                                <img src="{{ asset('storage/' . $voiture->photo) }}" alt="Photo actuelle" style="width: 200px;">
+                                <img src="{{ asset('storage/' . $voiture->photo) }}" alt="@lang('general.current_photo')" style="width: 200px;">
                             </div>
                         @endif
 
                         <hr>
 
-                        <a href="{{ url('voitures/'. $voiture->id) }}" class="btn btn-outline-primary">En savoir plus</a>
+                        <a href="{{ url('voitures/'. $voiture->id) }}" class="btn btn-outline-primary">@lang('general.learn_more')</a>
                     </div>
                 </div>
             @endforeach

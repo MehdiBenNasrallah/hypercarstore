@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h1>Modifier la voiture: {{ $voiture->marque }} {{ $voiture->modele }}</h1>
+<h1>@lang('general.edit_car'): {{ $voiture->marque }} {{ $voiture->modele }}</h1>
 
 @if ($message = Session::get('warning'))
     <div class="alert alert-warning">
@@ -15,42 +15,42 @@
     @csrf
 
     <div class="form-group mb-3">
-        <label for="marque">Marque:</label>
-        <input type="text" class="form-control" id="marque" placeholder="Entrez la marque" name="marque" value="{{ $voiture->marque }}" required>
+        <label for="marque">@lang('general.brand'):</label>
+        <input type="text" class="form-control" id="marque" placeholder="@lang('general.enter_brand')" name="marque" value="{{ $voiture->marque }}" required>
     </div>
 
     <div class="form-group mb-3">
-        <label for="modele">Modèle:</label>
-        <input type="text" class="form-control" id="modele" placeholder="Entrez le modèle" name="modele" value="{{ $voiture->modele }}" required>
+        <label for="modele">@lang('general.model'):</label>
+        <input type="text" class="form-control" id="modele" placeholder="@lang('general.enter_model')" name="modele" value="{{ $voiture->modele }}" required>
     </div>
 
     <div class="form-group mb-3">
-        <label for="annee">Année:</label>
-        <input type="number" class="form-control" id="annee" placeholder="Entrez l'année" name="annee" value="{{ $voiture->annee }}" required>
+        <label for="annee">@lang('general.year'):</label>
+        <input type="number" class="form-control" id="annee" placeholder="@lang('general.enter_year')" name="annee" value="{{ $voiture->annee }}" required>
     </div>
 
     <div class="form-group mb-3">
-        <label for="valeur">Valeur:</label>
-        <input type="number" class="form-control" id="valeur" placeholder="Entrez la valeur" name="valeur" value="{{ $voiture->valeur }}" required>
+        <label for="valeur">@lang('general.value'):</label>
+        <input type="number" class="form-control" id="valeur" placeholder="@lang('general.enter_value')" name="valeur" value="{{ $voiture->valeur }}" required>
     </div>
 
     <div class="form-group mb-3">
-        <label for="description">Description:</label>
+        <label for="description">@lang('general.description'):</label>
         <textarea name="description" id="description" cols="30" rows="10" class="form-control" required>{{ $voiture->description }}</textarea>
     </div>
 
     <div class="form-group mb-3">
-        <label for="photo">Photo de la voiture:</label>
+        <label for="photo">@lang('general.car_photo'):</label>
         <input type="file" class="form-control" id="photo" name="photo">
         @if ($voiture->photo)
             <div>
-                <img src="{{ asset('storage/' . $voiture->photo) }}" alt="Photo actuelle" style="width: 300px;">
+                <img src="{{ asset('storage/' . $voiture->photo) }}" alt="@lang('general.current_photo')" style="width: 300px;">
             </div>
         @endif
     </div>
 
-    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-    <a href="{{ url('voitures/'. $voiture->id) }}" class="btn btn-info">Annuler</a>
+    <button type="submit" class="btn btn-primary">@lang('general.save_changes')</button>
+    <a href="{{ url('voitures/'. $voiture->id) }}" class="btn btn-info">@lang('general.cancel')</a>
 </form>
 
 @endsection

@@ -1,7 +1,60 @@
 <?php
 // FR folder
 return [
-    'apropos' => 'A propos',
-    
-    
+    'toggle_navigation' => 'Basculer la navigation',
+    'search_car' => 'Recherche voiture',
+    'french' => 'Français',
+    'english' => 'Anglais',
+    'login' => 'Connexion',
+    'register' => 'Inscription',
+    'logout' => 'Déconnexion',
+    'car_management' => 'Gestion des voitures',
+    'add_car' => 'Ajouter une voiture',
+    'brand' => 'Marque',
+    'enter_brand' => 'Entrez la marque',
+    'model' => 'Modèle',
+    'enter_model' => 'Entrez le modèle',
+    'year' => 'Année',
+    'enter_year' => 'Entrez l\'année',
+    'value' => 'Valeur',
+    'enter_value' => 'Entrez la valeur',
+    'description' => 'Description',
+    'car_photo' => 'Photo de la voiture',
+    'back_home' => 'Retour à la page d\'accueil',
+
+    'edit_car' => 'Modifier la voiture',
+    'current_photo' => 'Photo actuelle',
+    'save_changes' => 'Enregistrer les modifications',
+    'cancel' => 'Annuler',
+
+    'car_list' => 'Liste des voitures',
+    'learn_more' => 'En savoir plus',
+
+    'edit' => 'Modifier',
+    'delete' => 'Supprimer',
+    'back_to_list' => 'Retour à la liste',
+    'offers_for_car' => 'Offres pour cette voiture',
+    'no_offers' => 'Aucune offre pour cette voiture pour le moment.',
+    'price' => 'Prix',
+    'message' => 'Message',
+    'user' => 'Utilisateur',
+    'add_offer' => 'Ajouter une offre',
+    'submit_offer' => 'Soumettre l\'offre',
+
+    'dashboard' => 'Tableau de bord',
+    'logged_in' => 'Vous êtes connecté!',
+
+
+    'french' => 'Français',
+    'english' => 'Anglais',
+    'spanish' => 'Espagnol',
+
+    'apropos' => 'À propos',
+    'project_description' => 'Description du projet',
+    'site_description' => 'Ce site web est une plateforme dédiée à la gestion, l\'achat et la vente de véhicules. Les utilisateurs peuvent explorer les voitures disponibles, ajouter de nouvelles annonces et passer des offres sur les véhicules qui les intéressent. Les administrateurs disposent d\'un tableau de bord complet leur permettant de gérer les voitures, les utilisateurs, les offres et d\'accéder à des outils d\'administration avancés.',
+    'database_schema' => 'Schéma de la base de données',
+    'references' => 'Références',
+    'example_link_1' => 'Lien de référence 1',
+    'example_link_2' => 'Lien de référence 2',
+    'site_contact_info' => 'Pour plus d\'informations, contactez-nous à : contact@example.com',
 ];

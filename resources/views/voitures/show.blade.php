@@ -3,61 +3,61 @@
 @section('content')
 
     <h1>{{ $voiture->marque }} - {{ $voiture->modele }}</h1>
-    <p>Année : {{ $voiture->annee }}</p>
-    <p>Valeur : {{ $voiture->valeur }} $</p>
-    <p>Description : {{ $voiture->description }}</p>
+    <p>@lang('general.year'): {{ $voiture->annee }}</p>
+    <p>@lang('general.value'): {{ $voiture->valeur }} $</p>
+    <p>@lang('general.description'): {{ $voiture->description }}</p>
 
     @if ($voiture->photo)
     <div>
-        <img src="{{ asset('storage/' . $voiture->photo) }}" alt="Photo actuelle" style="width: 300px;">
+        <img src="{{ asset('storage/' . $voiture->photo) }}" alt="@lang('general.current_photo')" style="width: 300px;">
     </div>
     @endif
 
     @if (Auth::check() && Auth::user()->isAdmin())
-        <a href="{{ url('admin/voitures/'. $voiture->id . '/edit') }}" class="btn btn-primary">Modifier</a>
+        <a href="{{ url('admin/voitures/'. $voiture->id . '/edit') }}" class="btn btn-primary">@lang('general.edit')</a>
         <form action="{{ url('admin/voitures/'. $voiture->id) }}" method="POST" style="display: inline;">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <button type="submit" class="btn btn-danger">@lang('general.delete')</button>
         </form>
     @endif
 
-    <a href="{{ url('/') }}" class="btn btn-secondary">Retour à la liste</a>
+    <a href="{{ url('/') }}" class="btn btn-secondary">@lang('general.back_to_list')</a>
 
     <hr>
 
-    <h2>Offres pour cette voiture</h2>
+    <h2>@lang('general.offers_for_car')</h2>
 
     @if ($voiture->offres->isEmpty())
-        <p>Aucune offre pour cette voiture pour le moment.</p>
+        <p>@lang('general.no_offers')</p>
     @else
         <div class="list-group">
             @foreach ($voiture->offres as $offre)
                 <div class="list-group-item">
-                    <p><strong>Prix :</strong> {{ $offre->prix }} $</p>
-                    <p><strong>Message :</strong> {{ $offre->message }}</p>
-                    <p><strong>Utilisateur :</strong> {{ $offre->user->name }}</p>
+                    <p><strong>@lang('general.price'):</strong> {{ $offre->prix }} $</p>
+                    <p><strong>@lang('general.message'):</strong> {{ $offre->message }}</p>
+                    <p><strong>@lang('general.user'):</strong> {{ $offre->user->name }}</p>
                 </div>
             @endforeach
         </div>
     @endif
 
     @if (Auth::check() && !Auth::user()->isAdmin())
-        <h3>Ajouter une offre</h3>
+        <h3>@lang('general.add_offer')</h3>
         
         <form action="{{ route('offres.store') }}" method="POST">
             @csrf
             <div class="form-group">
-                <label for="prix">Prix</label>
+                <label for="prix">@lang('general.price')</label>
                 <input type="text" class="form-control" id="prix" name="prix" required>
             </div>
             <div class="form-group">
-                <label for="message">Message</label>
+                <label for="message">@lang('general.message')</label>
                 <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
             </div>
             <input type="hidden" name="voiture_id" value="{{ $voiture->id }}">
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-            <button type="submit" class="btn btn-success">Soumettre l'offre</button>
+            <button type="submit" class="btn btn-success">@lang('general.submit_offer')</button>
         </form>
     @endif
 
