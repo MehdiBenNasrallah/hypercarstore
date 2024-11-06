@@ -10,8 +10,8 @@
     </div>
 @endif
 
-<form method="post" action="{{ url('voitures/'. $voiture->id) }}" enctype="multipart/form-data">
-    @method('PATCH')
+<form method="post" action="{{ url('admin/voitures/'. $voiture->id) }}" enctype="multipart/form-data">
+    @method('GET')
     @csrf
 
     <div class="form-group mb-3">

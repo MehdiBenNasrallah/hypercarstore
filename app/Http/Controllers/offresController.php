@@ -36,20 +36,28 @@ class offresController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'prix' => 'required',
-            'message' => 'required',
-            'voiture_id' => 'required',
-            'user_id' => 'required',
-        ]);
-    
-        if ($validator->fails()) {
-            return redirect()->back()->with('warning', 'Veuillez remplir tous les champs');
-        }
-    
-        offres::create($request->all());
-        return redirect()->back()->with('success', 'Offre créée avec succès');
+{
+    // Validation des données
+    $validator = Validator::make($request->all(), [
+        'prix' => 'required|numeric',
+        'message' => 'required',
+        'voiture_id' => 'required|exists:voitures,id', // Assurez-vous que l'ID de la voiture existe
+        'user_id' => 'required|exists:users,id', // Assurez-vous que l'ID de l'utilisateur existe
+    ]);
+
+    if ($validator->fails()) {
+        return redirect()->back()->with('warning', 'Veuillez remplir tous les champs correctement');
+    }
+
+    // Création de l'offre
+    offres::create([
+        'prix' => $request->prix,
+        'message' => $request->message,
+        'voiture_id' => $request->voiture_id,
+        'user_id' => $request->user_id,
+    ]);
+
+    return redirect()->back()->with('success', 'Offre créée avec succès');
     }
 
     /**

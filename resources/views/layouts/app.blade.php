@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,47 +26,98 @@
     <!-- jQuery and jQuery UI -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-
 </head>
 <body>
-
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name') }}
                 </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                <a class="navbar-brand" href="{{ url('/info') }}">@lang("general.apropos")</a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav me-auto">
+                        <a class="navbar-brand" href="{{ url('/info') }}">@lang("general.apropos")</a>
 
-                <form class="form-inline my-2 my-lg-0 position-relative">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Recherche voiture" aria-label="Search" id="search">
-                    <div id="search-results" class="list-group position-absolute" style="display: none;"></div>
-                </form>
+                        <form class="form-inline my-2 my-lg-0 position-relative">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Recherche voiture" aria-label="Search" id="search">
+                            <div id="search-results" class="list-group position-absolute" style="display: none;"></div>
+                        </form>
 
-                <!-- Bloc multilingue -->
-                <ul class="navbar-nav ms-auto">
-                    @php $locale = session()->get('locale'); @endphp
-                    <li class="nav-item dropdown">
+                        <!-- Bloc multilingue -->
+                        <ul class="navbar-nav ms-auto">
+                            @php $locale = session()->get('locale'); @endphp
+                            <li class="nav-item dropdown">
 
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            <img id="language-flag" src="{{ asset('/images/' . ($locale === 'fr' ? 'fr.png' : 'en.png')) }}" width="30px" height="20px">
-                            <span id="language-text">{{ $locale === 'fr' ? 'Français' : 'English' }}</span>
-                        </a>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <img id="language-flag" src="{{ asset('/images/' . ($locale === 'fr' ? 'fr.png' : 'en.png')) }}" width="30px" height="20px">
+                                    <span id="language-text">{{ $locale === 'fr' ? 'Français' : 'English' }}</span>
+                                </a>
 
 
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('lang', ['locale' => 'en']) }}">
-                                <img src="{{ asset('images/en.png') }}" width="30px" height="20px"> English
-                            </a>
-                            <a class="dropdown-item" href="{{ route('lang', ['locale' => 'fr']) }}">
-                                <img src="{{ asset('images/fr.png') }}" width="30px" height="20px"> Français
-                            </a>
-                        </div>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('lang', ['locale' => 'en']) }}">
+                                        <img src="{{ asset('images/en.png') }}" width="30px" height="20px"> English
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('lang', ['locale' => 'fr']) }}">
+                                        <img src="{{ asset('images/fr.png') }}" width="30px" height="20px"> Français
+                                    </a>
+                                </div>
 
-                    </li>
-                </ul>
+                            </li>
+                        </ul>
+
+                    </ul>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ms-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            @if (Route::has('login'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                </li>
+                            @endif
+
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+
+                                    <!-- Links d'administration uniquement visibles par les admins -->
+                                    @if (Auth::check() && Auth::user()->isAdmin())
+                                        <a class="dropdown-item" href="{{ url('/admin/voitures') }}">Gestion des voitures</a>
+                                        <a class="dropdown-item" href="{{ url('/admin/voitures/create') }}">Ajouter une voiture</a>
+                                    @else
+                                        {{ Log::info('User is not admin', ['user_id' => Auth::user()->id, 'role' => Auth::user()->role]) }}
+                                    @endif
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
             </div>
         </nav>
 

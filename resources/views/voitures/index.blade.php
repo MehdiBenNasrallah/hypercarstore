@@ -9,7 +9,9 @@
         </div>
 
         <div class="col-lg-2">
-            <a class="btn btn-success" href="{{ url('voitures/create') }}">Ajouter une voiture</a>
+            @if (Auth::check() && Auth::user()->isAdmin())
+                <a class="btn btn-success" href="{{ url('voitures/create') }}">Ajouter une voiture</a>
+            @endif
         </div>
 
     </div>
