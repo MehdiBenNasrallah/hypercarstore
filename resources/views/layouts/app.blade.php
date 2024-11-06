@@ -22,6 +22,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- jQuery and jQuery UI -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -36,12 +37,37 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name') }}
                 </a>
-                <a class="navbar-brand" href="{{ url('/info') }}">Info</a>
+
+                <a class="navbar-brand" href="{{ url('/info') }}">@lang("general.apropos")</a>
 
                 <form class="form-inline my-2 my-lg-0 position-relative">
                     <input class="form-control mr-sm-2" type="search" placeholder="Recherche voiture" aria-label="Search" id="search">
                     <div id="search-results" class="list-group position-absolute" style="display: none;"></div>
                 </form>
+
+                <!-- Bloc multilingue -->
+                <ul class="navbar-nav ms-auto">
+                    @php $locale = session()->get('locale'); @endphp
+                    <li class="nav-item dropdown">
+
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <img id="language-flag" src="{{ asset('/images/' . ($locale === 'fr' ? 'fr.png' : 'en.png')) }}" width="30px" height="20px">
+                            <span id="language-text">{{ $locale === 'fr' ? 'Français' : 'English' }}</span>
+                        </a>
+
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('lang', ['locale' => 'en']) }}">
+                                <img src="{{ asset('images/en.png') }}" width="30px" height="20px"> English
+                            </a>
+                            <a class="dropdown-item" href="{{ route('lang', ['locale' => 'fr']) }}">
+                                <img src="{{ asset('images/fr.png') }}" width="30px" height="20px"> Français
+                            </a>
+                        </div>
+
+                    </li>
+                </ul>
             </div>
         </nav>
 

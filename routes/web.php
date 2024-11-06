@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\voituresController;
 use App\Http\Controllers\offresController;
+use App\Http\Controllers\LocalizationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,9 @@ Route:: get ('/', [voituresController::class, 'index']);
 
 // Route pour l'autocomplétion
 Route::get('/voitures/autocomplete', [voituresController::class, 'autocomplete'])->name('voitures.autocomplete');
+
+// Route pour la localisation
+Route::get('/lang/{locale}', [LocalizationController::class, 'index'])->name('lang');
 
 
 Route::resources([
